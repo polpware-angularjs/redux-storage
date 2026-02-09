@@ -19,6 +19,7 @@ node_modules/: package.json
 clean:
 	echo "> Cleaning ..."
 	rm -rf build/
+	rm -rf dist/
 
 mrproper: clean
 	echo "> Cleaning deep ..."
@@ -32,6 +33,17 @@ build: clean install
 	echo "> Building ..."
 	BABEL_ENV=cjs $(BIN)/babel src/ --out-dir build/
 	BABEL_ENV=es $(BIN)/babel src/ --out-dir build-es/
+
+#
+# BUILD (UMD for browser)
+#
+
+build-umd: install
+	echo "> Building UMD bundle for browser ..."
+	$(BIN)/rollup -c rollup.config.js
+
+build-all: build build-umd
+	echo "> All builds complete"
 
 build-watch: clean install
 	echo "> Building forever ..."
@@ -59,7 +71,7 @@ test-watch: install
 
 _publish : NODE_ENV ?= production
 _publish : BABEL_ENV=cjs
-_publish: lint test build
+_publish: lint test build-all
 
 publish-fix: _publish
 	$(BIN)/release-it --increment patch
@@ -77,7 +89,7 @@ publish-breaking: _publish
 .PHONY: \
 	install \
 	clean mrproper \
-	build build-watch \
+	build build-watch build-umd build-all \
 	lint test test-watch \
 	publish-fix publish-feature publish-breaking
 

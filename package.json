@@ -3,9 +3,15 @@
   "version": "4.1.6",
   "description": "Persistence layer for redux with flexible backends",
   "main": "build/index.js",
+  "module": "build-es/index.js",
   "jsnext:main": "build-es/index.js",
+  "browser": "dist/redux-storage.min.js",
+  "unpkg": "dist/redux-storage.min.js",
+  "jsdelivr": "dist/redux-storage.min.js",
   "scripts": {
-    "test": "make lint test build"
+    "test": "make lint test build",
+    "build:umd": "rollup -c rollup.config.js",
+    "build:all": "npm run build:umd"
   },
   "repository": {
     "type": "git",
@@ -32,6 +38,7 @@
   "files": [
     "build/",
     "build-es/",
+    "dist/",
     "src",
     "!**/__tests__/**"
   ],
@@ -40,6 +47,13 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.11.4",
     "babel-polyfill": "^6.9.1",
@@ -49,7 +63,8 @@
     "eslint-config-michaelcontento": "^1.1.1",
     "eslint-plugin-mocha-only": "0.0.3",
     "mocca": "^1.0.3",
-    "release-it": "^2.4.1"
+    "release-it": "^2.4.1",
+    "rollup": "^4.9.0"
   },
   "dependencies": {
     "lodash.isfunction": "^3.0.8",
